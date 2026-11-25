@@ -1,0 +1,16 @@
+{
+  "identifier": "ashenmare/mow-producer-priority",
+  "version": "1.0.0",
+  "name": "MoW Producer Priority",
+  "author": "ashenmare",
+  "scope": "unscoped",
+  "assemblies": [
+    "MowProducerPriority.dll"
+  ],
+  "dependencies": {
+    "required": [
+      "rr/game >=0.6.2"
+    ]
+  },
+  "description": "Your MoW cars come first at the plants that make their loads: each keeps a reserve for MoW, filled first, on top of its shipping pile. A reserve size per load in Preferences > Mods (0 to 3 days, 0 = off). Every player needs it; the host's setting counts."
+}

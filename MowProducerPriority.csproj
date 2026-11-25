@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Railroader 0.6 DLL mod: a plant's MoW seller gets its own pile, filled first (host side; the reserve is the game's own storage). -->
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <AssemblyName>MowProducerPriority</AssemblyName>
+    <RootNamespace>MowProducerPriority</RootNamespace>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Version>1.0.0</Version>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <Product>MoW Producer Priority</Product>
+    <Company>ashenmare</Company>
+    <!-- no debug symbols in the shipped dll: a pdb path would embed this machine's directories -->
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <PathMap>$(MSBuildProjectDirectory)=/_/</PathMap>
+    <Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- Point this at the game's Managed folder (Railroader_Data/Managed) with -p:ManagedPath=... or by setting the
+         RAILROADER_MANAGED environment variable. See README.md, Building. -->
+    <ManagedPath Condition="'$(ManagedPath)' == ''">$(RAILROADER_MANAGED)</ManagedPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+    <!-- shipped beside MowProducerPriority.dll in the pack, NOT listed in Info.json assemblies -->
+    <PackageReference Include="Lib.Harmony" Version="2.3.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src/**/*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Railroader.Modding"><HintPath>$(ManagedPath)/Railroader.Modding.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Railroader"><HintPath>$(ManagedPath)/Railroader.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Newtonsoft.Json"><HintPath>$(ManagedPath)/Newtonsoft.Json.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Core"><HintPath>$(ManagedPath)/Core.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine"><HintPath>$(ManagedPath)/UnityEngine.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.UI"><HintPath>$(ManagedPath)/UnityEngine.UI.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Unity.TextMeshPro"><HintPath>$(ManagedPath)/Unity.TextMeshPro.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.TextRenderingModule"><HintPath>$(ManagedPath)/UnityEngine.TextRenderingModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="KeyValue.Runtime"><HintPath>$(ManagedPath)/KeyValue.Runtime.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(ManagedPath)/UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <Target Name="CheckManagedPath" BeforeTargets="ResolveAssemblyReferences" Condition="'$(ManagedPath)' == '' Or !Exists('$(ManagedPath)/Railroader.dll')">
+    <Error Text="Set ManagedPath (or the RAILROADER_MANAGED environment variable) to the game's Railroader_Data/Managed folder. See README.md, Building." />
+  </Target>
+</Project>
